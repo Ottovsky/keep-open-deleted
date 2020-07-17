@@ -10,3 +10,11 @@ Docker image available at:
 ```bash
 docker pull ottovsky/keepopendeleted
 ```
+
+
+Run in k8s with:
+```bash
+kubectl create deployment keepopendeleted --image=ottovsky/keepopendeleted
+```
+
+**Run only in the sandbox environment!**
