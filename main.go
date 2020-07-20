@@ -42,7 +42,13 @@ func main() {
 	for _, f := range files {
 		f := f
 		wg.Add(1)
-		go writeToFile(f, maxSize, *block)
+		go func() {
+			defer wg.Done()
+			err := writeToFile(f, maxSize, *block)
+			if err != nil {
+				log.Printf("err: %v", err)
+			}
+		}()
 	}
 	err = deleteFiles(files)
 	if err != nil {
@@ -85,7 +91,7 @@ func createFiles(count int, location string) ([]*os.File, error) {
 func deleteFiles(files []*os.File) (err error) {
 	for _, f := range files {
 		err = os.Remove(f.Name())
-		log.Println("Deleted file: ", f.Name())
+		log.Printf("deleted file: %s err: %v", f.Name(), err)
 	}
 	return err
 }
@@ -100,8 +106,6 @@ func createBlock(size int) *[]byte {
 }
 
 func writeToFile(fd *os.File, maxSize int, block []byte) error {
-	defer wg.Done()
-
 	switch maxSize {
 	case -1:
 		for {
