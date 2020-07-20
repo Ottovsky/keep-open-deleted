@@ -1,5 +1,5 @@
 ### PoC for https://github.com/kubernetes/kubernetes/issues/83107
-Simple program to check if the issue in question can cause a k8s worker to fail.
+Simple program to check if the issue 83107 can cause a k8s worker to fail.
 
 Compile with 
 ```bash
@@ -18,3 +18,6 @@ kubectl create deployment keepopendeleted --image=ottovsky/keepopendeleted
 ```
 
 **Run only in the sandbox environment!**
+
+### Result:
+Pods are randomly evicted from the node: ![alt text](evicted.png)
