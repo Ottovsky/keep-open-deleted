@@ -30,6 +30,8 @@ func init() {
 func main() {
 	flag.Parse()
 
+	end := make(<-chan struct{})
+
 	files, err := createFiles(count, location)
 	if err != nil {
 		log.Fatal(err)
@@ -57,6 +59,7 @@ func main() {
 	log.Println("Still writing to deleted files.")
 	wg.Wait()
 	log.Println("Done writing.")
+	<-end
 }
 
 func SetupCloseHandler(files []*os.File) {
