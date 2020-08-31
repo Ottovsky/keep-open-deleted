@@ -32,7 +32,7 @@ jobs:
     - name: Build
       env:
        CGO_ENABLED: 0
-      run: go build -v -a -ldflags '-extldflags "-static"'  -o keepopendeleted main.go
+      run: go build -v -a -ldflags '-extldflags "-static"' -o keepopendeleted main.go
     
     - name: Upload artifact
       uses: actions/upload-artifact@v2
