@@ -1,0 +1,49 @@
+name: Go
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Set up Go 1.14
+      uses: actions/setup-go@v2
+      with:
+        go-version: ^1.14
+      id: go
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+
+    - name: Get dependencies
+      run: |
+        go get -v -t -d ./...
+
+    - name: Build
+      run: go build -v -o keepopendeleted main.go
+
+    - name: Test
+      run: go test -v .
+      
+  publish:
+    needs: [build]
+    name: Publish docker image
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Push to Docker Hub
+      uses: docker/build-push-action@v1
+      if: startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/heads/master')
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        repository: ottovsky/keepopendeleted
+        tag_with_ref: true
+        tag_with_sha: true
