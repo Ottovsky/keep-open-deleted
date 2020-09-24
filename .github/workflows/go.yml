@@ -69,4 +69,3 @@ jobs:
         push: true
         tags: |
           ottovsky/keepopendeleted:latest
-          ottovsky/keepopendeleted:${{ github.GITHUB_SHA }}
