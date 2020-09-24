@@ -53,12 +53,22 @@ jobs:
       with:
         name: binary
         
-    - name: Push to Docker Hub
+#     - name: Push to Docker Hub
+#       uses: docker/build-push-action@v1
+#       if: startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/heads/master')
+#       with:
+#         username: ${{ secrets.DOCKER_USERNAME }}
+#         password: ${{ secrets.DOCKER_PASSWORD }}
+#         repository: ottovsky/keepopendeleted
+#         tag_with_ref: true
+#         tag_with_sha: true
+    - name: Push to Github Registry
       uses: docker/build-push-action@v1
       if: startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/heads/master')
       with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-        repository: ottovsky/keepopendeleted
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: docker.pkg.github.com
+        repository: Ottovsky/keep-open-deleted/keepopendeleted
         tag_with_ref: true
         tag_with_sha: true
