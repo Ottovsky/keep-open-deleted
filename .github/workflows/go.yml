@@ -32,7 +32,7 @@ jobs:
     - name: Build
       env:
        CGO_ENABLED: 0
-      run: go build -v -a -ldflags '-extldflags "-static"' -o keepopendeleted main.go && chmod a+x keepopendeleted
+      run: go build -v -a -ldflags '-extldflags "-static"' -o keepopendeleted main.go
     
     - name: Upload artifact
       uses: actions/upload-artifact@v2
@@ -52,7 +52,9 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: binary
-        
+    
+    - run: chmod +x keepopendeleted
+      
     - name: Push to Docker Hub
       uses: docker/build-push-action@v1
       if: startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/heads/master')
